@@ -27,9 +27,11 @@ const Home = (props) => {
   const [releaseenddate, setReleaseEndDate] = useState('');
   const [artist, setArtist] = useState([]);
   const [tileData, settileData] = useState([]);
+  const [tileDataSelected, settileDataSelected] = useState([]);
   const [checkboxChecked, setCheckbox] = useState(false);
-  const [render,setrender] = useState(false);
+  const [render, setrender] = useState(false);
 
+  //setting Theme
   const theme = createMuiTheme({
     palette: {
       primary: {
@@ -44,6 +46,7 @@ const Home = (props) => {
     settingartists();
   }, []);
 
+  //setting movie data in to the tiles
   const settingmoviedata = () => {
     fetch(props.baseUrl + "movies/", {
       method: "GET",
@@ -55,14 +58,12 @@ const Home = (props) => {
     })
       .then((response) => response.json())
       .then((response) => {
-        for (let data of response.movies) {
-          tileData.push(data);
-          settileData(tileData);
-        }
+        settileData(response.movies);
+        settileDataSelected(response.movies);
       });
   }
 
-
+  //setting genere data
   const settinggenres = () => {
     fetch(props.baseUrl + "genres/", {
       method: "GET",
@@ -74,13 +75,14 @@ const Home = (props) => {
     })
       .then((response) => response.json())
       .then((response) => {
-        for (let data of response.genres) {
-          genre.push(data);
-          setGenre(genre);
-        }
+        setGenre(response.genres.map(g => {
+          g.checked = false;
+          return g;
+        }));
       });
   }
 
+  //setting artist data
   const settingartists = () => {
     fetch(props.baseUrl + "artists/", {
       method: "GET",
@@ -92,28 +94,42 @@ const Home = (props) => {
     })
       .then((response) => response.json())
       .then((response) => {
-        for (let data of response.artists) {
-          artist.push(data);
-          setArtist(artist);
-        }
+        setArtist(response.artists.map(a => {
+          a.checked = false;
+          return a;
+        }));
       });
   }
 
+  //To handle change event on select checkbox of artist
   const artistChangeHandler = (e) => {
     const val = e.target.value;
-    artist.push(val);
-    setArtist(artist);
+    setArtist(artist.map(a => {
+      if (a.id === val) {
+        a.checked = !a.checked;
+      }
+      return a;
+    }));
   }
 
+  //To handle change event on select checkbox of genre
   const genreChangeHandler = (e) => {
-    genre.push(e.target.value);
-    setGenre(genre);
+    const val = e.target.value;
+    const slectedgen = [];
+    setGenre(genre.map(g => {
+      if (g.genre === val) {
+        g.checked = !g.checked;
+      }
+      return g;
+    }));
   }
 
+  //clicking on a movie navigates to deatils page
   const handlerender = (id) => {
-    window.location.href = "/movie/id/"+id;
+    window.location.href = "/movie/id/" + id;
   }
 
+  //Function call on applying filters
   const onApplyFilters = () => {
 
     settileData([]);
@@ -134,21 +150,39 @@ const Home = (props) => {
   }
 
   const settingsearchedmoviedata = (response) => {
-    for (let data of response.movies) {
-      tileData.push(data);
-      tileData.map((tile) => {
-        if (moviename !== null && tile.title === moviename) {
-          settileData(tileData);
-        }
+    const titles = []
+    response.movies.map((tile) => {
 
-        if ((genre !== null && (JSON.stringify(genre) === JSON.stringify(tile.genre)))) {
-          settileData(tileData);
-        }
-        
-      });
-    }
+      if ((moviename !== null && tile.title === moviename) ||
+        (genre !== null && (JSON.stringify(genre) === JSON.stringify(tile.genre))) ||
+        (artist !== null && (JSON.stringify(artist) === JSON.stringify(tile.artist))) ||
+        (releasestartdate !== null && tile.release_date === releasestartdate)
+      ) {
+        titles.push(tile);
+      }
 
-    settileData(tileData);
+      else if (moviename !== null && tile.title === moviename) {
+        titles.push(tile);
+      }
+
+      else if ((genre !== null && (JSON.stringify(genre) === JSON.stringify(tile.genre)))) {
+        titles.push(tile);
+      }
+
+      else if ((artist !== null && (JSON.stringify(artist) === JSON.stringify(tile.artist)))) {
+        titles.push(tile);
+      }
+
+      else if (releasestartdate !== null && tile.release_date === releasestartdate) {
+        titles.push(tile);
+      }
+
+      else if (releaseenddate !== null && tile.release_date === releaseenddate) {
+        titles.push(tile);
+      }
+    });
+    settileData(response.movies)
+    settileDataSelected(titles);
   }
 
   return (
@@ -160,7 +194,7 @@ const Home = (props) => {
 
 
       <div className='gridcontainer'>
-        <GridList className='gridlist' cols={6} cellHeight={250} style={{ margin: 0, width: '100%'}}>
+        <GridList className='gridlist' cols={6} cellHeight={250} style={{ margin: 0, width: '100%' }}>
           {tileData.length && tileData.map((tile) => (
             <GridListTile key={tile.id} className='gridlisttile' tileheight={250} onClick={() => handlerender(tile.id)}>
               <img src={tile.poster_url} alt={tile.title} className='imgclass' />
@@ -173,7 +207,7 @@ const Home = (props) => {
             </GridListTile>
           ))}
         </GridList>
-        
+
       </div>
 
 
@@ -182,7 +216,7 @@ const Home = (props) => {
         <div className="firsthalf gridcontainer">
           <div className='gridcontainersecondhalf'>
             <GridList className='gridlist' cols={4} cellHeight={350}>
-              {tileData.map((tile) => (
+              {tileDataSelected.map((tile) => (
                 <GridListTile key={tile.id} className='gridlisttile' tileheight={550} style={{ width: "auto", margin: "16px" }} onClick={() => handlerender(tile.id)}>
                   <img src={tile.poster_url} alt={tile.title} className='imgclass' />
                   <GridListTileBar className='title' style={{ width: "auto" }}
@@ -218,10 +252,10 @@ const Home = (props) => {
                 <br />
                 <FormControl className="formControl" style={{ margin: theme.spacing.unit }}>
                   <InputLabel htmlFor="genre">Genre</InputLabel>
-                  <Select value={genre}>
+                  <Select value={genre.filter(g => g.checked).map(g => g.genre)}>
                     {genre.map((gen) => (
                       <MenuItem key={gen.id} value={gen.genre}>
-                        <Checkbox checked={checkboxChecked} value={gen.genre} onChange={(e) => genreChangeHandler(e)} />
+                        <Checkbox checked={gen.checked} value={gen.genre} onChange={(e) => genreChangeHandler(e)} />
                         {gen.genre}
                       </MenuItem>
                     ))}
@@ -230,10 +264,10 @@ const Home = (props) => {
                 <br />
                 <FormControl className="formControl" style={{ margin: theme.spacing.unit }}>
                   <InputLabel htmlFor="artist">Artist</InputLabel>
-                  <Select value={artist}>
+                  <Select value={artist.filter(a => a.checked).map(a => a.first_name + " " + a.last_name)}>
                     {artist.map((art) => (
                       <MenuItem key={art.id} value={art.first_name + " " + art.last_name}>
-                        <Checkbox checked={checkboxChecked} value={art.first_name + " " + art.last_name} onChange={e => artistChangeHandler(e)} />
+                        <Checkbox checked={art.checked} value={art.id} onChange={e => artistChangeHandler(e)} />
                         {art.first_name + " " + art.last_name}
                       </MenuItem>
                     ))}

@@ -60,10 +60,12 @@ const Details = (props) => {
     }
   }, [])
 
+  //To handle backbutton funtionality
   const handleclickback = () => {
     window.location.href = '/';
   }
 
+  //To set states of the five stars used for rating
   const settingcolor1 = () => {
     if (classnametochangecolor1 === 'beforeclickingstarborder1') {
       setClassname1('starborder1');
@@ -122,7 +124,7 @@ const Details = (props) => {
         </div>
         <div className="item2">
           <Typography variant="headline" component="h2" className='heading'>{title}</Typography>
-          <Typography variant="caption" style={{ fontWeight: "bold" }}>Genre: <span style={{ fontWeight: "normal" }}>{genres !== null && genres.length && genres.map((genre,index) => <span key={index}>{genre} </span>)}</span></Typography>
+          <Typography variant="caption" style={{ fontWeight: "bold" }}>Genre: <span style={{ fontWeight: "normal" }}>{genres !== null && genres.length && genres.map((genre, index) => <span key={index}>{genre} </span>)}</span></Typography>
           <Typography variant="caption" style={{ fontWeight: "bold" }}>Duration: <span style={{ fontWeight: "normal" }}>{duration}</span></Typography>
           <Typography variant="caption" style={{ fontWeight: "bold" }}>Release Date: <span style={{ fontWeight: "normal" }}>{releasedate}</span></Typography>
           <Typography variant="caption" style={{ fontWeight: "bold" }}>Rating: <span style={{ fontWeight: "normal" }}>{criticsrating}</span></Typography><br />

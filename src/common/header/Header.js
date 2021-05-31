@@ -6,10 +6,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import FormControl from '@material-ui/core/FormControl';
-
-
 import Modal from 'react-modal';
-import BookShow from "../../screens/bookshow/BookShow";
 
 export default function Header(props) {
    const [buttonname, setbuttonname] = useState('Login');
@@ -17,6 +14,7 @@ export default function Header(props) {
    const [isshown, setissshown] = useState('bookshowbutton');
    const [value, setValue] = useState(0);
 
+   //Setting buttonname and to show/hide the bookshow button
    useEffect(() => {
       if ((window.location.pathname.indexOf("/movie/")) == 0) {
          setissshown('clickedbookshowbutton');
@@ -27,10 +25,12 @@ export default function Header(props) {
       }
    }, [props]);
 
+   //To handle login and register tabs
    const handleTabs = (e, val) => {
       setValue(val);
    }
 
+   //To handle login and logout functionalities
    const logout = () => {
       setmodalIsOpen(false);
       window.sessionStorage.setItem("access-token", null);
@@ -46,6 +46,7 @@ export default function Header(props) {
       setbuttonname('Logout');
    }
 
+   // To navigate to login or nbookshow page on onclick of bookshow button
    const handelShowBook = () => {
       ((isshown === 'clickedbookshowbutton') ? ((buttonname === 'Login') ? setmodalIsOpen(true) : (window.location.href = "/bookshow/id/" + props.propsdata.match.params.id)) : setissshown('bookshowbutton'))
    }

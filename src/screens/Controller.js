@@ -8,6 +8,7 @@ import Confirmation from "../screens/confirmation/Confirmation";
 const Controller = () =>{
    const baseUrl = "/api/v1/";
    
+   //Controller to manage routings in the app
    return(
        <Router>
            <div className="mainpage">
