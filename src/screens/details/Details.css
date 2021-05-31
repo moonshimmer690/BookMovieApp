@@ -1,0 +1,96 @@
+.backbutton{
+    margin-left: 24px;
+    margin-top: 8px;
+    margin-bottom: 0px;
+    height: 24px;
+}
+
+.backbutton:hover{
+  cursor: pointer;
+}
+
+.container {
+  display: flex; 
+  flex-wrap: wrap;
+}
+
+.item1 {
+    flex: 20;
+}
+  
+.item2 {
+    flex: 60;
+    margin:2px;
+}
+
+.item3 {
+    flex: 20;
+    margin:2px;
+}
+
+.trailervideo{
+  margin-top: 16px;
+  width: 900px;
+}
+
+.displaymovieinfo{
+  font-weight: bold;
+}
+
+.beforeclickingstarborder1{
+  color: black;
+}
+
+.starborder1{
+  color: yellow; 
+}
+
+.beforeclickingstarborder2{
+  color: black;
+}
+
+.starborder2{
+  color: yellow; 
+}
+
+.beforeclickingstarborder3{
+  color: black;
+}
+
+.starborder3{
+  color: yellow; 
+}
+
+.beforeclickingstarborder4{
+  color: black;
+}
+
+.starborder4{
+  color: yellow; 
+}
+
+.beforeclickingstarborder5{
+  color: black;
+}
+
+.starborder5{
+  color: yellow; 
+}
+
+
+.gridcontainer{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  overflow: hidden; 
+}
+
+.gridList{
+  flex-wrap: nowrap;
+  transform: translateZ(0);
+}
+
+.title{
+  text-align: left;
+}
+

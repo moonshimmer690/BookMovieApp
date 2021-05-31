@@ -1,0 +1,59 @@
+.upcomingmovies{
+    background-color: #ff9999;
+    padding: 8px;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.gridcontainer{
+  display: flex;
+  justify-content: space-around;   
+}
+
+.gridcontainer .gridList{
+    overflow-x: auto;
+	flex-wrap: nowrap;    
+}
+
+.icon{
+    
+  color: rgba(255, 255, 255, 0.54);
+ 
+}
+
+.imgclass{
+    height: 250px;
+    width: 200px;
+}
+
+.imgclass:hover {
+	cursor: pointer;
+}
+
+.title{
+    text-align: left;
+}
+
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.flex-container .firsthalf {
+    width: 76%;
+    margin: 16px;
+}
+
+.flex-container .secondhalf {
+    width: 18%;
+    margin: 16px;
+}
+
+.formControl {
+    min-width: 240px;
+    max-width: 240px;
+}
+
+.cardcontainer{
+  width:300px;
+}
